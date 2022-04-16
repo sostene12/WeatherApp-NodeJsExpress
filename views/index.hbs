@@ -12,25 +12,39 @@
     <div class="main-content">
     {{>header}}
     <p>Use this site to get to the Weather</p>
+    <form>
+        <input type="text" name="address" placeholder="Location">
+        <button>Search</button>
+    </form>
+    <p id="message-one"></p>
+    <p id="message-two"></p>
     </div>
    
     {{>footer}}
 </body>
     <script >
-       try{
-            fetch("http://localhost:3000/weather?address=kigali").then(res =>{
+        const form = document.querySelector('form');
+        const messageOne = document.querySelector("p#message-one")
+        const messageTwo = document.querySelector("p#message-two")
+        form.addEventListener('submit',(e) =>{
+            e.preventDefault();
+        const address = form.address.value;
+        messageOne.textContent = 'Loading......';
+        messageOne.textContent = '';
+        fetch(`http://localhost:3000/weather?address=${address}`).then(res =>{
              res.json().then(data =>{
                  if(data.error){
-                     return console.log(data.error)
+                     messageOne.style.color = 'red'
+                     return messageOne.textContent = (data.error);
+                    
                  }
-                 console.log(data.forecast);
-                 console.log(data.location);
+                 messageOne.textContent = data.location;
+                 messageTwo.textContent = data.forecast;
              });
         })
-       }
-       catch(err){
-           console.log(err)
-       }
+        })
+            
+     
 
     </script>
 
