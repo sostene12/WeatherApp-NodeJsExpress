@@ -50,9 +50,17 @@ app.get("/weather", (req, res) => {
           return res.send({ error });
         }
         const temp = forecastData.main.feels_like - 273.15;
+        const max = forecastData.main.temp_max - 273.15;
+        const min = forecastData.main.temp_min - 273.15;
         const look = forecastData.weather[0].description;
         res.send({
-          forecast: `It is ${temp} degrees and we have ${look} `,
+          forecast: `It is ${temp.toFixed(
+            1
+          )} degrees,The maximum Temperature right now is ${max.toFixed(
+            1
+          )} degrees and the minimum temperature right now is ${min.toFixed(
+            1
+          )} degrees . Also we have ${look} `,
           location: location,
           address: req.query.address,
         });
